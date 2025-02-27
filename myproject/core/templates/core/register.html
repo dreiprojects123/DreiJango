@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% load static %}  <!-- Load static files in Django -->
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<!-- ✅ Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- ✅ Show success or error messages -->
+{% if messages %}
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            title: "{% if message.tags == 'success' %}Success{% else %}Registration Failed{% endif %}",
+            text: "{{ message }}",
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "OK"
+        });
+    </script>
+    {% endfor %}
+{% endif %}
+
+<!-- ✅ Container with Login Form & Image -->
+<div class="flex h-screen items-center justify-center">
+    <div class="w-full max-w-4xl flex bg-white shadow-lg rounded-xl overflow-hidden">
+        <!-- Left Section - Registration Form -->
+        <div class="w-full md:w-1/2 p-10">
+            <h2 class="text-2xl font-semibold text-gray-900 text-center">REGISTER</h2>
+
+            <form method="POST" class="mt-6 space-y-4">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div>
+                    <label for="{{ form.username.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">Username</label>
+                    {{ form.username }}
+                </div>
+
+                <div>
+                    <label for="{{ form.email.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
+                    {{ form.email }}
+                </div>
+ 
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="{{ form.first_name.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">First Name</label>
+                        {{ form.first_name }}
+                    </div>    
+                
+                    <div>
+                        <label for="{{ form.last_name.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.password1.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">Password</label>
+                    {{ form.password1 }}
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="{{ form.password2.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
+
+                <!-- Register Button with Gradient -->
+                <button type="submit" 
+                        class="w-full px-4 py-2 text-white rounded-md bg-gradient-to-r from-blue-500 to-blue-900 hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    Register
+                </button>
+            </form>
+
+            <!-- Redirect to Login -->
+            <p class="mt-4 text-sm text-center text-gray-600">
+                Already have an account? <a href="{% url 'login' %}" class="text-blue-600 hover:text-blue-500">Login here</a>
+            </p>
+        </div>
+
+        <div class="hidden md:block w-1/2 bg-cover bg-center"
+            style="background-image: url('/media/profile pic/loginbg.png');">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

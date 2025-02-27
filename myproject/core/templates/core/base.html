@@ -1,0 +1,170 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django App{% endblock %}</title>
+    <!-- SweetAlert2 CDN -->
+    <script script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    {% tailwind_css %}
+    <style>
+        :root {
+            --primary-dark: #1a1b4b;
+            --primary-blue: #003797;
+            --light-bg: #f0f6ff;
+            --text-light: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            min-height: 100vh;
+        }
+        h1, p {
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        /* Header and Navigation */
+        .header {
+            background-color: var(--primary-dark);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(186, 41, 41, 0.1);
+        }
+
+        .logo-section {
+            background-color: var(--primary-dark);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-section h1 {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            margin-left: 1rem;
+        }
+
+        .nav-bar {
+            background-color: var(--primary-blue);
+            padding: 0.75rem 2rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-bar a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-bar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .welcome-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-section h2 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        /* Buttons */
+        .button {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #002d7a;
+        }
+
+        /* Auth Container */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .header{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+
+        <nav class="">
+            <div class="mx-auto max-w-6xl px-2 sm:px-4 lg:px-5">
+              <div class="relative flex h-6 items-center justify-between">
+                
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                </div>
+
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  
+
+                  {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post">
+                      {% csrf_token %}
+                      <a href="{% url 'home' %}" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700">Home</a>   
+                      <a href="/posts/" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700">Posts</a>
+            
+                      <a href="{% url 'create_post' %}" class="rounded-md bg-green-500 px-3 py-2 text-sm font-medium text-white hover:bg-green-700">Create Post</a>
+                      <button type="submit" class="rounded-md bg-red-500 px-3 py-2 text-sm font-medium text-white hover:bg-red-600">Logout</button>
+                    </form>
+
+                    {% else %}
+                    <a href="{% url 'home' %}" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700">Home</a>
+                    <a href="{% url 'register' %}" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700">Register</a>
+                    <a href="{% url 'login' %}" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700">Login</a>
+                  {% endif %}
+                
+                </div>
+              </div>
+            </div>
+          </nav>
+ 
+    </header>
+    <main class="main-content">
+        {% block content %}
+        <!-- Child templates will insert their content here -->
+        {% endblock %}
+
+    </main>
+</body>
+</html> 

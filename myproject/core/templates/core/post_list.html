@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+
+{% block title %}All Posts{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto mt-10 p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">📢 All Posts</h2>
+
+    {% for post in posts %}
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-200 hover:shadow-lg transition duration-300">
+        
+        <!-- Post Title and Author -->
+        <div class="flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-gray-900">{{ post.title }}</h3>
+            <p class="text-gray-500 text-sm">by <span class="font-semibold">{{ post.author.username }}</span> | 
+                {{ post.created_at|date:"F d, Y, g:i a" }}
+            </p>
+        </div>
+
+        <!-- ✅ Display Image (If Exists) -->
+        {% if post.image %}
+        <div class="mt-4 flex justify-left">
+            <img src="{{ post.image.url }}" alt="Post Image" class="w-40 h-40 object-cover rounded-md shadow">
+        </div>
+    {% endif %}
+    
+
+        <!-- Hidden Content -->
+        <div class="hidden mt-4 text-gray-700" id="post-content-{{ post.id }}">
+            <p>{{ post.content }}</p>
+        </div>
+
+        <!-- View/Hide Post Button -->
+        <div class="mt-4 text-left">
+            <button onclick="toggleContent({{ post.id }})"
+                id="toggle-btn-{{ post.id }}"
+                class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-300 mb-3">
+                View Post
+            </button>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-500 text-lg text-center">No posts available. Start by creating a post!</p>
+    {% endfor %}
+</div>
+
+<!-- JavaScript to Show/Hide Post Content -->
+<script>
+    function toggleContent(postId) {
+        var contentDiv = document.getElementById('post-content-' + postId);
+        var btn = document.getElementById('toggle-btn-' + postId);
+
+        if (contentDiv.classList.contains("hidden")) {
+            contentDiv.classList.remove("hidden");
+            btn.textContent = "Hide Post";
+        } else {
+            contentDiv.classList.add("hidden");
+            btn.textContent = "View Post";
+        }
+    }
+</script>
+
+{% endblock %}
